@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package open</title>
+    <!-- import of the logo -->
+    <link rel="icon" href="../images/logo.png" type="image/x-icon">
+    <!-- import of custom CSS-->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/card.css">
+</head>
+<body >
+    <div id="menu"></div>
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-12">
+                    <h1>Open a card package</h1>
+                <p>In this package you will find 5 cards, it will cost 1 credit. <br>
+                    Current credits: <span id="current_credits" class="current_credits"></span>
+                    <br> You can open it only if you selected an album.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="button-container">
+                    <button id="cardPack" class="card-pack btn"> M A R V E L</button>
+                    <div id="lock" class="text-center hidden">
+                        <p class="text-danger" id="error_Message"></p>
+                        <i class="fas fa-lock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="pack_cards" class="hidden pack_cards">
+                        
+                    </div>
+                </div>
+            </div>
+            </div> 
+        </div>
+    <footer id="footer"></footer>
+
+    <script >
+        document.getElementById('cardPack').addEventListener('click',async function() {
+            const button = this;
+                // Set loading state
+                button.disabled = true;  
+                button.classList.add('shake');          
+                await printPackage().then (result => {
+                    button.classList.remove('shake');
+                    button.classList.add("hidden");
+                    document.getElementById('pack_cards').classList.remove('hidden');
+                    printCredits();
+                    button.disabled = false;
+                });       // Then wait for data   
+        });
+    </script>
+
+    <script >
+    async function toggleLock() {
+        const lockDiv = document.getElementById('lock');
+        const cardPackButton = document.getElementById('cardPack');
+        const credits = await get_credits();
+        if (!localStorage.getItem("album_ID") || credits < 1  ) {
+            lockDiv.classList.add('active');
+            if (!localStorage.getItem("album_ID")) {
+                document.getElementById("error_Message").textContent = "Please select an album first";
+            }
+            else
+            {
+                document.getElementById("error_Message").textContent = "Not enough credits";
+            }
+            lockDiv.classList.remove('hidden');
+            cardPackButton.disabled = true;
+        } else {
+            lockDiv.classList.remove('active');
+            lockDiv.classList.add('hidden');
+            cardPackButton.disabled = false;
+        }
+    }
+    </script>
+    
+		<!-- import of JS -->
+        <script src="../scripts/theme.js"></script>
+        <!-- import of the bootstrap js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <!-- import of the jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="../scripts/marvel.js"></script>
+        <script src="../scripts/navbar.js"></script>
+        <script src="../scripts/login.js"></script>
+        <script type="module" src="../scripts/footer.js"></script>
+        <script>
+        </script>
+        <script> 
+            printCredits();
+            toggleLock();
+        </script>
+    <!-- end of import of JS -->
+</body>
+</html>
