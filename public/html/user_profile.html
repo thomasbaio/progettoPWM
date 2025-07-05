@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Album delle figurine dei super eroi (AFSE) - Base page">
+		<meta name="description" content="Marvel Vault (MV) - Base page">
 		<title>
 			User profile
 		</title>
@@ -17,8 +17,11 @@
     <form class="container p-3"> <!-- Container of the form-->
         <div class="form-floating mb-3">
         <h1> User profile</h1>
-        <p>Here you can manage your data, even delete your account if you want. <span class="text-danger fw-bold">Deletion of the account is irreversible
-        </span></p>
+        <p>Manage your personal information here. You can also permanently delete your account at any time.  
+        <span class="text-danger fw-bold">
+        Please note: this action is irreversible.
+        </span>
+        </p>
         </div>
         <div class="form-floating mb-3">
             <input id="email" type="email" required="required" class="form-control" placeholder="name@example.com" aria-label="Email" autocomplete="email">
@@ -28,7 +31,7 @@
             <input id="username" type="text" required="required" class="form-control" placeholder="Username" aria-label="Nome utente" minlength="4" maxlength="16">
             <label for="username">Username</label>
         </div>
-        <p style="font-size: 80%; color: grey;">The username length must be betwheen 4 and 16 charachters</p>
+        <p style="font-size: 80%; color: lightskyblue;">The username length must be betwheen 4 and 16 charachters</p>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-floating mb-3">
@@ -42,7 +45,7 @@
                     <label for="password2">Confirm password</label>
                 </div>
             </div> 
-            <p style="font-size: 80%; color: grey;">The password must be at least 7 charachters</p>
+            <p style="font-size: 80%; color: lightskyblue;">The password must be at least 8 charachters</p>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -103,29 +106,28 @@
         <script type="module" src="../scripts/footer.js"></script>
     <!-- end of import of JS -->
 
-<script>
-    function confirmDelete() {
-      const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
-      if (confirmed) {
-        deleteUser();
-      }
-    }
-</script>
-<script type="module">
+        <script>
+         function confirmDelete() {
+         const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+         if (confirmed) {
+         deleteUser();
+         }
+         }
+       </script>
+       <script type="module">
        // Wait for DOM and all resources to load
        window.addEventListener('load',async () => {
         await populateUserProfile().catch(error => {
             console.error("Failed to populate user profile:", error);
         });
         await printNavBar();
-    });
-</script>
-<script>
-    window.addEventListener('unhandledrejection', function(event) {
+        });
+       </script>
+      <script>
+       window.addEventListener('unhandledrejection', function(event) {
         console.error('Unhandled promise rejection:', event.reason);
-    });
-</script>
- <script src="../scripts/navbar.js"></script>
+       });
+      </script>
+      <script src="../scripts/navbar.js"></script>
 </body>
-
 </html>

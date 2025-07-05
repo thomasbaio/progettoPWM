@@ -2,32 +2,29 @@
 :root {
     --card-width: 300px;
 }
-.card_album{
+
+.card_album {
     display: grid;
     grid-template-columns: repeat(3, var(--card-width));
     gap: 20px;
     max-width: calc(var(--card-width) * 3 + 40px);
     margin: 0 auto;
 }
+
 .card {
-    background-color: var(--bs-red);
+    background-color: var(--bs-white);
     border: 10px solid var(--bs-black);
     border-radius: 15px;
-    /*width: var(--card-width);*/
-    width: 33%;
     height: 500px;
-    position: relative;
-    overflow: hidden;
-    float: left;
     min-width: 200px;
     padding: 10px;
     margin: 2px;
+    /* width: var(--card-width);  // opzionale, grid gestisce già la larghezza */
 }
-/* Media query to add border on desktop for navigation elements */
 @media screen and (min-width: 780px) {
     .card {
         width: 33%;
-     }
+    }
 }
 
 @media screen and (max-width: 780px) {
@@ -42,7 +39,10 @@
     font-size: 125%;
     font-weight: bold;
     width: 100%;
-    vertical-align: middle;
+    /* vertical-align: middle; */ /* Questo non ha effetto, meglio usare Flex se serve */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-content {
@@ -52,24 +52,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border : 1px solid black
+    border: 1px solid black;
 }
 .card-body::-webkit-scrollbar {
-
     width: 3px;
-  }
-  .card-body::-webkit-scrollbar-thumb {
+}
+.card-body::-webkit-scrollbar-thumb {
     background: red; 
-  }
-
-  .card-body::-webkit-scrollbar-track {
+}
+.card-body::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
     border-radius: 10px;
-  }
+}
+
 .card-content img {
     width: 100%;
     height: 260px;
-
+    object-fit: cover; /* opzionale, per riempire senza deformare */
 }
 
 .card-body {
@@ -77,63 +76,71 @@
     text-align: center;
     overflow-y: auto;
 }
-.card-footer
-{
-    font-size :8px;
+
+.card-footer {
+    font-size: 8px;
     text-align: right;
 }
 
 @media (prefers-color-scheme: dark) {
     .card {
         border: 10px solid var(--bs-white);
-        color : var(--bs-white)
-
+        color: var(--bs-white); /* punto e virgola aggiunto */
     }
 }
-
 .card-shine-effect-metal {
---shine-deg: 45deg;
-position: relative;
-overflow: hidden;
-border-radius: 0.875rem;
+  --shine-deg: 45deg;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.875rem;
 }
 
 .card-shine-effect-metal:after {
-content: "";
-top: 0;
-transform: translateX(100%) rotate(var(--shine-deg));
-width: 300%;
-height: 300%;
-position: absolute;
-z-index: 1;
-background: linear-gradient(
-30deg,
-transparent 20%,
-transparent 40%,
-rgb(255, 255, 255, 0.4) 50%,
-rgb(255, 255, 255, 0.4) 55%,
-transparent 70%,
-transparent 100%
-);
-transition: transform 2s ease-in;
-transform: translateX(100%) rotate(var(--shine-deg));
+  content: "";
+  position: absolute;
+  top: 0; left: 0; /* Posizionamento corretto */
+  width: 300%;
+  height: 300%;
+  z-index: 1;
+  pointer-events: none; /* Consigliato */
+  background: linear-gradient(
+    30deg,
+    transparent 20%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.4) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  transform: translateX(100%) rotate(var(--shine-deg));
+  transition: transform 2s ease-in;
 }
 
 .card-shine-effect-metal:hover:after {
-animation: shine 1s 1 ease-in;
+  animation: shine 1s 1 ease-in;
 }
 
+@keyframes shine {
+  0% {
+    transform: translateX(100%) rotate(var(--shine-deg));
+  }
+  100% {
+    transform: translateX(-100%) rotate(var(--shine-deg));
+  }
+}
+
+/* Per compatibilità WebKit (opzionale oggi): */
 @-webkit-keyframes shine {
-0% {
-transform: translateX(100%) rotate(var(--shine-deg));
-}
-100% {
-transform: translateX(-100%) rotate(var(--shine-deg));
-}
+  0% {
+    transform: translateX(100%) rotate(var(--shine-deg));
+  }
+  100% {
+    transform: translateX(-100%) rotate(var(--shine-deg));
+  }
 }
 .card-pack{
     background-color: #BC0000;
-    background-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.7)), url('');
+    background-image: linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.7));
     background-size: cover;
     background-position: center;
     position: relative;
@@ -147,8 +154,7 @@ transform: translateX(-100%) rotate(var(--shine-deg));
 }
 
 .shake {
-    animation: shake 1s ;
-    animation-iteration-count: infinite;
+    animation: shake 1s infinite;
 }
 
 @keyframes shake {
@@ -164,12 +170,17 @@ transform: translateX(-100%) rotate(var(--shine-deg));
     90% { transform: translate(1px, 2px) rotate(0deg); }
     100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+
 .button-container {
     position: relative; 
 }
 
-#lock.active {
+#lock {
     display: none; 
+}
+
+#lock.active {
+    display: flex;
     position: absolute;
     top: 0;
     left: 0;
@@ -177,12 +188,7 @@ transform: translateX(-100%) rotate(var(--shine-deg));
     height: 100%; 
     background: rgba(255, 255, 255, 0.9);
     z-index: 2; 
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-#lock {
-    display: block; 
 }
