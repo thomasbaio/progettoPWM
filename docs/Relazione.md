@@ -81,7 +81,7 @@ Il Back-End è responsabile delle funzionalità e della logica dell'applicazione
 
 - `/config/`: Questa cartella contiene i file dedicati alla configurazione dell'applicazione, ad eccezione delle variabili d'ambiente. Al suo interno, sono presenti:
   - prefs.js - _Questo file viene utilizzato per caricare i valori inseriti dall'utente in modo che siano direttamente utilizzabili
-
+#
 - `/lib/`: La directory lib contiene tutte le funzioni Node.js utilizzate per le funzionalità degli endpoint. Inoltre
 Alcuni dei file e delle directory principali sono:
   - /lib/database.js

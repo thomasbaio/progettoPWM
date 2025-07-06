@@ -1,0 +1,32 @@
+# Dipendenze Node.js
+node_modules/
+
+# File di ambiente (con password/API)
+.env
+
+# Log file
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Directory temporanee
+dist/
+build/
+tmp/
+.cache/
+
+# File di sistema/macOS/Windows
+.DS_Store
+Thumbs.db
+
+# IDE/editor config files
+.vscode/
+.idea/
+
+# Output test o coverage
+coverage/
+
+# Database locale (se usi Mongo in locale)
+*.local.db
+*.local.json

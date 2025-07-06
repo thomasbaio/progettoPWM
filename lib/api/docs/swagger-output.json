@@ -5,7 +5,7 @@
     "description": "API for AFSE (Album delle Figurine dei Super Eroi)",
     "version": "1.0.0"
   },
-  "host": "localhost:666",
+  "host": "undefined:undefined",
   "basePath": "/",
   "tags": [
     {
