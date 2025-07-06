@@ -143,16 +143,16 @@ app.post('/check_my_exchanges', async (req, res) => {
 });
 
 // Marvel API
-app.get("/character/:id", async (req, res) => {
+app.get("/characters", async (req, res) => {
   try {
-    const response = await marvel_API.getFromMarvel(req, 'public/characters/' + req.params.id, '');
+    // gestisci query string, paginazione, ecc.
+    const response = await marvel_API.getFromMarvel(req, 'characters', req.query);
     res.json(response);
   } catch (error) {
-    console.error("Error fetching character:", error);
-    res.status(500).json({ error: "Failed to fetch character" });
+    console.error("Error fetching characters:", error);
+    res.status(500).json({ error: "Failed to fetch characters" });
   }
 });
-
 // SWAGGER MANAGEMENT
 app.use('/api-docs', swaggerUiServe, swaggerUiSetup(swaggerDocument));
 
@@ -179,8 +179,12 @@ app.post('/check-db', async (req, res) => {
   res.status(result.status).json(result);
 });
 app.post("/characters", (req, res) => {
-  marvel_API.getFromMarvel(req, 'public/characters', req.query.query)
-    .then(response => { res.send(response); });
+  marvel_API.getFromMarvel(req, 'characters', req.query)
+    .then(response => res.json(response))
+    .catch(error => {
+      console.error("Error fetching characters:", error);
+      res.status(500).json({ error: "Failed to fetch characters" });
+    });
 });
 
 // AUTHENTICATION
