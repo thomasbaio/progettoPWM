@@ -97,30 +97,37 @@ class SearchableSelect {
         }
     }
 
-    displayResults(data) {
-        this.searchResults.innerHTML = '';
-        if (data.length === 0) {
-            const noResults = document.createElement('li');
-            noResults.className = 'search-item text-muted';
-            noResults.textContent = 'No valid results found';
-            this.searchResults.appendChild(noResults);
-        } else {
-            data.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'search-item';
-                li.textContent = item.name; // Adjust according to your data structure
-                li.dataset.value = item.id; // Adjust according to your data structure
-                
-                li.addEventListener('click', () => {
-                    this.selectItem(item);
-                });
-                
-                this.searchResults.appendChild(li);
-            });
-        }
-        
-        this.showResults();
+   displayResults(data) {
+    this.searchResults.innerHTML = '';
+    // Se data.results esiste ed è array, usalo
+    let results = [];
+    if (Array.isArray(data)) {
+        results = data;
+    } else if (data && Array.isArray(data.results)) {
+        results = data.results;
     }
+    if (results.length === 0) {
+        const noResults = document.createElement('li');
+        noResults.className = 'search-item text-muted';
+        noResults.textContent = 'No valid results found';
+        this.searchResults.appendChild(noResults);
+    } else {
+        results.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'search-item';
+            li.textContent = item.name; // Adjust according to your data structure
+            li.dataset.value = item.id; // Adjust according to your data structure
+            
+            li.addEventListener('click', () => {
+                this.selectItem(item);
+            });
+            
+            this.searchResults.appendChild(li);
+        });
+    }
+    
+    this.showResults();
+}
 
     async selectItem(item) {
         this.selectedValue.value = item.id; // Adjust according to your data structure
