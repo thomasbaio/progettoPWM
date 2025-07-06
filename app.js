@@ -2,6 +2,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+// Serve la cartella "public" per CSS, JS, immagini, ecc.
+app.use(express.static(path.join(__dirname, 'public')));
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -31,8 +33,7 @@ global.db;
 const app = express();
 app.use(express.json());
 
-// Serve la cartella "public" per CSS, JS, immagini, ecc.
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 //  Swagger UI disponibile su /api-docs
 app.use('/api-docs', swaggerUiServe, swaggerUiSetup(swaggerDocument));
