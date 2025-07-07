@@ -145,12 +145,22 @@ app.post('/check_my_exchanges', async (req, res) => {
   await database.get_my_exchanges(req.body).then(response => { res.send(response); });
 });
 
-// Marvel API
+// Harry Potter API
 app.get("/characters", async (req, res) => {
   try {
-    // gestisci query string, paginazione, ecc.
-    const response = await marvel_API.getFromMarvel(req, 'characters', req.query);
-    res.json(response);
+    // Query string: puoi filtrare lato backend dopo il fetch se vuoi
+    const response = await hp_API.getFromHP("characters"); // oppure getAllCharacters()
+    // Se vuoi filtrare per nome, casa, ecc. dal frontend, fallo qui:
+    let results = response.data.results;
+    if (req.query.name) {
+      results = results.filter(c => c.name.toLowerCase().includes(req.query.name.toLowerCase()));
+    }
+    if (req.query.house) {
+      results = results.filter(c => c.house && c.house.toLowerCase() === req.query.house.toLowerCase());
+    }
+    // Puoi aggiungere altri filtri qui
+
+    res.json({ code: 200, data: { results } });
   } catch (error) {
     console.error("Error fetching characters:", error);
     res.status(500).json({ error: "Failed to fetch characters" });
