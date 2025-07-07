@@ -191,8 +191,11 @@ app.post('/check-db', async (req, res) => {
   const result = await database.check_db_connection();
   res.status(result.status).json(result);
 });
+app.post('/package', (req, res) => {
+  hp_API.returnPackage(req.body).then(response => { res.send(response); });
+});
 app.post("/characters", (req, res) => {
-  marvel_API.getFromMarvel(req, 'characters', req.query)
+  hp_API.getFromHP(req, 'characters', req.query)
     .then(response => res.json(response))
     .catch(error => {
       console.error("Error fetching characters:", error);
