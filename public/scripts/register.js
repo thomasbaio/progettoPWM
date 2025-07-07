@@ -48,11 +48,17 @@ class SearchableSelect {
             
             // Creation of the query
             query="nameStartsWith="+query+"&orderBy=name&"
-
-            await getMarvelCarachters(query).then (async response  => {
-                if (window.location.pathname === '/create_exchange') {
-                    const user_Id = localStorage.getItem("_id");
-                    const album_ID = localStorage.getItem("album_ID");
+            async function getHPCharacters(query) {
+            // Chiama la tua API backend che restituisce i personaggi Harry Potter
+     // Puoi adattare l'URL e i parametri secondo necessità
+           const response = await fetch(`/characters?name=${encodeURIComponent(query)}`);
+  if (!response.ok) {
+    throw new Error('Errore recupero personaggi');
+  }
+  const data = await response.json();
+  // data.data.results se il backend restituisce la struttura come nel tuo hp.js
+  return data.data.results;
+}
                     
                     if (user_Id && album_ID) {
                         const filteredData = [];
