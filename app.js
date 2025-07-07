@@ -87,12 +87,16 @@ app.get('/albums/:userid', async (req, res) => {
   }
 });
 
+// Importa la tua nuova hp.js come hp_API
+const hp_API = require('./hp.js'); // o import ... se usi ES Modules
+
 app.get('/albums_cards/:albumid', async (req, res) => {
   try {
     const response = await database.getAlbumsCards(req.params.albumid);
     for (let i = 0; i < response.length; i++) {
-      const marvelData = await marvel_API.getFromMarvel(req, 'public/characters/' + response[i].card_Id, '');
-      response[i].marvel_data = marvelData;
+      // Adatta qui: supponiamo che card_Id sia il nome del personaggio!
+      const hpData = await hp_API.getCharacterByName(response[i].card_Id);
+      response[i].hp_data = hpData;
     }
     res.send(response);
   } catch (error) {
@@ -105,8 +109,8 @@ app.get('/albums_duplicated_cards/:albumid', async (req, res) => {
   try {
     const response = await database.getDuplicatedAlbumsCards(req.params.albumid);
     for (let i = 0; i < response.length; i++) {
-      const marvelData = await marvel_API.getFromMarvel(req, 'public/characters/' + response[i].card_Id, '');
-      response[i].marvel_data = marvelData;
+      const hpData = await hp_API.getCharacterByName(response[i].card_Id);
+      response[i].hp_data = hpData;
     }
     res.send(response);
   } catch (error) {
