@@ -10,7 +10,13 @@ import { dirname } from 'path';
 // Serve la cartella "public" per CSS, JS, immagini, ecc.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// INIZIALIZZA QUI:
+const app = express();
+
+// Ora puoi usare app.use(...)
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 import * as database from './lib/database.js';
 import * as hp_API from './lib/hp.js'; // <-- il nuovo import!
@@ -26,12 +32,6 @@ import swaggerDocument from './lib/api/docs/swagger-output.json' with { type: 'j
 
 // Variabile globale
 global.db;
-
-// Inizializza Express
-const app = express();
-app.use(express.json());
-
-
 
 //  Swagger UI disponibile su /api-docs
 app.use('/api-docs', swaggerUiServe, swaggerUiSetup(swaggerDocument));
