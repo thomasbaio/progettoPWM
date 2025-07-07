@@ -148,8 +148,6 @@ app.post('/check_my_exchanges', async (req, res) => {
 // Harry Potter API
 app.get("/characters", async (req, res) => {
   try {
-    // Query string: puoi filtrare lato backend dopo il fetch se vuoi
-    const response = await hp_API.getFromHP("characters"); // oppure getAllCharacters()
     // Se vuoi filtrare per nome, casa, ecc. dal frontend, fallo qui:
     let results = response.data.results;
     if (req.query.name) {
