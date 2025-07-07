@@ -1,3 +1,12 @@
+// Funzione utility per cercare personaggi Harry Potter via backend
+async function getHPCharacters(query) {
+    const response = await fetch(`/characters?name=${encodeURIComponent(query)}`);
+    if (!response.ok) {
+        throw new Error('Errore recupero personaggi');
+    }
+    const data = await response.json();
+    return data.data.results; // Adatta se il formato è diverso
+}
 
 class SearchableSelect {
     constructor(config) {
@@ -45,26 +54,6 @@ class SearchableSelect {
     async performSearch(query) {
         try {
             this.showLoading();
-            
-            // Creation of the query
-            query="nameStartsWith="+query+"&orderBy=name&"
-           // Funzione utility per cercare personaggi Harry Potter via backend
-async function getHPCharacters(query) {
-    const response = await fetch(`/characters?name=${encodeURIComponent(query)}`);
-    if (!response.ok) {
-        throw new Error('Errore recupero personaggi');
-    }
-    const data = await response.json();
-    return data.data.results; // Adatta se il formato è diverso
-}
-
-class SearchableSelect {
-    // ... (resto del costruttore e metodi) ...
-
-    async performSearch(query) {
-        try {
-            this.showLoading();
-
             // Recupera i risultati HP
             const results = await getHPCharacters(query);
 
@@ -106,38 +95,37 @@ class SearchableSelect {
         }
     }
 
-
-   displayResults(data) {
-    this.searchResults.innerHTML = '';
-    // Se data.results esiste ed è array, usalo
-    let results = [];
-    if (Array.isArray(data)) {
-        results = data;
-    } else if (data && Array.isArray(data.results)) {
-        results = data.results;
-    }
-    if (results.length === 0) {
-        const noResults = document.createElement('li');
-        noResults.className = 'search-item text-muted';
-        noResults.textContent = 'No valid results found';
-        this.searchResults.appendChild(noResults);
-    } else {
-        results.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'search-item';
-            li.textContent = item.name; // Adjust according to your data structure
-            li.dataset.value = item.id; // Adjust according to your data structure
-            
-            li.addEventListener('click', () => {
-                this.selectItem(item);
+    displayResults(data) {
+        this.searchResults.innerHTML = '';
+        // Se data.results esiste ed è array, usalo
+        let results = [];
+        if (Array.isArray(data)) {
+            results = data;
+        } else if (data && Array.isArray(data.results)) {
+            results = data.results;
+        }
+        if (results.length === 0) {
+            const noResults = document.createElement('li');
+            noResults.className = 'search-item text-muted';
+            noResults.textContent = 'No valid results found';
+            this.searchResults.appendChild(noResults);
+        } else {
+            results.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'search-item';
+                li.textContent = item.name; // Adjust according to your data structure
+                li.dataset.value = item.id; // Adjust according to your data structure
+                
+                li.addEventListener('click', () => {
+                    this.selectItem(item);
+                });
+                
+                this.searchResults.appendChild(li);
             });
-            
-            this.searchResults.appendChild(li);
-        });
+        }
+        
+        this.showResults();
     }
-    
-    this.showResults();
-}
 
     async selectItem(item) {
         this.selectedValue.value = item.id; // Adjust according to your data structure
@@ -150,65 +138,65 @@ class SearchableSelect {
         });
         this.searchInput.dispatchEvent(event);
         if (['/card' ].includes(window.location.pathname))
-            {
-                document.getElementById('character_details').innerHTML=``;
-                var Div_Car =
-                '<div class="card card-shine-effect-metal" id="char-'+item.id+'">'+
-                    '<div class="card-header">'+
-                        item.name+
-                    '</div>'+
-                    //'<hr>'+
-                    '<div class="card-content">'+
-                        '<img src="'+item.thumbnail.path.replace(/"/g, "")+'.'+item.thumbnail.extension+'">'+
-                    '</div>'+
-                    '<div class="card-body">'+
-                    item.description+
-                    '</div>'+
-                    '<div class="card-footer">'+
-                    'Data provided by ©Marvel'
-                    '</div>'+
-                '</div>';
-                document.getElementById("CardContainer").innerHTML = Div_Car;
-                //If the user is logged and has selected an album and have the card in the album i present all data
-                var user_Id = localStorage.getItem("_id");
-                var album_ID = localStorage.getItem("album_ID");
-                if (!user_Id || !album_ID ) {
-                    return;
+        {
+            document.getElementById('character_details').innerHTML=``;
+            var Div_Car =
+            '<div class="card card-shine-effect-metal" id="char-'+item.id+'">'+
+                '<div class="card-header">'+
+                    item.name+
+                '</div>'+
+                //'<hr>'+
+                '<div class="card-content">'+
+                    '<img src="'+item.thumbnail.path.replace(/"/g, "")+'.'+item.thumbnail.extension+'">'+
+                '</div>'+
+                '<div class="card-body">'+
+                item.description+
+                '</div>'+
+                '<div class="card-footer">'+
+                'Data provided by ©Marvel'
+                '</div>'+
+            '</div>';
+            document.getElementById("CardContainer").innerHTML = Div_Car;
+            //If the user is logged and has selected an album and have the card in the album i present all data
+            var user_Id = localStorage.getItem("_id");
+            var album_ID = localStorage.getItem("album_ID");
+            if (!user_Id || !album_ID ) {
+                return;
+            }
+            try {
+                const response = await fetch('/check_card_album', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_Id: user_Id,
+                        album_Id: album_ID,
+                        card_Id: item.id // invio dell'id al posto della password.
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("Autenticazione non valida");
                 }
-                try {
-                    const response = await fetch('/check_card_album', {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            user_Id: user_Id,
-                            album_Id: album_ID,
-                            card_Id: item.id // invio dell'id al posto della password.
-                        })
-                    });
-                    if (!response.ok) {
-                        throw new Error("Autenticazione non valida");
-                    }
-                    const userData = await response.json();
-                    if (userData.length>0) {
+                const userData = await response.json();
+                if (userData.length>0) {
                     const character_details = document.getElementById('character_details');
-                     let seriesHtml=``;
-                     let eventsHtml=``;
-                     let comicsHtml=``;
-                    if ( item.series.available>0 ){
+                    let seriesHtml=``;
+                    let eventsHtml=``;
+                    let comicsHtml=``;
+                    if ( item.series && item.series.available>0 ){
                         seriesHtml = '<hr><h3>Series:</h3><br>';
                         for (let series of item.series.items) {
                             seriesHtml += `<p>${series.name}</p>`;
                         }
                     }
-                    if ( item.events.available>0 ){
+                    if ( item.events && item.events.available>0 ){
                         eventsHtml = '<hr><h3>Events:</h3>';
                         for (let events of item.events.items) {
                             eventsHtml += `<p>${events.name}</p>`;
                         }
                     }
-                    if ( item.comics.available>0 ){
+                    if ( item.comics && item.comics.available>0 ){
                         comicsHtml = '<hr><h3>Comics:</h3>';
                         for (let comic of item.comics.items) {
                             comicsHtml += `<p>${comic.name}</p>`;
@@ -216,14 +204,12 @@ class SearchableSelect {
                     }
                     character_details.innerHTML = seriesHtml + eventsHtml + comicsHtml;
                 }
-                    }
-                    /*Check the superhero that doesn't work*/
-                catch (error) {
-                    console.error("Errore!",error);
-                    return "ERR";
-                }
-                //}
             }
+            catch (error) {
+                console.error("Errore!",error);
+                return "ERR";
+            }
+        }
     }
 
     displayError(message) {
@@ -248,6 +234,7 @@ class SearchableSelect {
     hideLoading() {
         this.loadingIndicator.classList.add('d-none');
     }
+
     async setSuperheroById(id) {
         try {
             this.showLoading();
@@ -398,7 +385,7 @@ async function register() {
         });
         
 
-        const result = await response;;
+        const result = await response.json();
 
         if (!response.ok) {
             if (response.status == 530) {
@@ -436,7 +423,7 @@ async function register() {
  }
 
 
- async function populateUserProfile() {
+async function populateUserProfile() {
     var email = localStorage.getItem("email");
     var username = localStorage.getItem("username");
     var _id = localStorage.getItem("_id");
@@ -491,13 +478,11 @@ async function register() {
                 searchInput.value = "Error loading superhero";
             }
         }
-        /*Check the superhero that doesn't work*/
-        document.getElementById("date_of_birth").value = userData.date;    }
-     catch (error) {
+        document.getElementById("date_of_birth").value = userData.date;    
+    } catch (error) {
         console.error("Errore!",error);
         return "ERR";
     }
-    
 }
 
 async function updateUser() {
