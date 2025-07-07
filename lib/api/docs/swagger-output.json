@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Marvel Characters API",
-    "description": "API for AFSE (Album delle Figurine dei Super Eroi)",
+    "title": "Hogwarts  Characters API",
+    "description": "API for hpvault",
     "version": "1.0.0"
   },
-  "host": "undefined:undefined",
+  "host": "localhost:10000",
   "basePath": "/",
   "tags": [
     {
@@ -14,23 +14,23 @@
     },
     {
       "name": "users",
-      "description": "Endpoints for the management of user data and related operations."
+      "description": "User management endpoints."
     },
     {
       "name": "auth",
-      "description": "Endpoints related to authentication and user authorization."
+      "description": "Authentication endpoints."
     },
     {
       "name": "cards",
-      "description": "Endpoints for managing the cards of the album."
+      "description": "Album card management."
     },
     {
       "name": "exchanges",
-      "description": "Endpoint to manage exchanges."
+      "description": "Exchange management."
     },
     {
       "name": "database",
-      "description": "Endpoint to check the database connection."
+      "description": "Database status check."
     }
   ],
   "schemes": [
@@ -45,10 +45,7 @@
   "paths": {
     "/": {
       "get": {
-        "tags": [
-          "fetch"
-        ],
-        "description": "Endpoint that allows to obtain index.html page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -58,21 +55,15 @@
     },
     "/package": {
       "get": {
-        "tags": [
-          "cards"
-        ],
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       },
       "post": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to get a package of characters",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -82,10 +73,7 @@
     },
     "/card": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint that allows to fetch the card detail page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -95,10 +83,7 @@
     },
     "/user": {
       "get": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint that allows to fetch the user manage page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -108,10 +93,7 @@
     },
     "/login": {
       "get": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint that allows to fetch the login modal page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -119,45 +101,46 @@
         }
       },
       "post": {
-        "tags": [
-          "auth"
-        ],
-        "description": "Endpoint that allows to check if user",
+        "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "description": "Body to validate login.",
             "schema": {
-              "$ref": "#/definitions/loginrequest"
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "User login data is valid",
-            "schema": {
-              "$ref": "#/definitions/loggeduser"
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Data is not valid, missing parameter"
+            "description": "Bad Request"
           },
           "401": {
-            "description": "User not authorized"
+            "description": "Unauthorized"
           },
           "500": {
-            "description": "Internal error"
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/register": {
       "get": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint that allows to fetch the user registration page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -165,39 +148,17 @@
         }
       },
       "post": {
-        "tags": [
-          "auth"
-        ],
-        "description": "Endpoint that allows to register a new user",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Body to be registered in the DB.",
-            "schema": {
-              "$ref": "#/definitions/registerrequest"
-            }
-          }
-        ],
+        "description": "",
         "responses": {
-          "200": {
-            "description": "succesfully registered."
-          },
-          "400": {
-            "description": "User already exists, invalid parameter"
-          },
-          "500": {
-            "description": "Generic error"
+          "default": {
+            "description": ""
           }
         }
       }
     },
     "/album": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint that allows to fetch the album page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -207,10 +168,7 @@
     },
     "/sell_cards": {
       "get": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint that allows to fetch the page to sell cards",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -220,10 +178,7 @@
     },
     "/albums/{userid}": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint that allows to fetch the albums of the user",
+        "description": "",
         "parameters": [
           {
             "name": "userid",
@@ -244,10 +199,7 @@
     },
     "/albums_cards/{albumid}": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint that allows to fetch the cards in the album",
+        "description": "",
         "parameters": [
           {
             "name": "albumid",
@@ -268,10 +220,7 @@
     },
     "/albums_duplicated_cards/{albumid}": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint that allows to fetch duplicated cards of the album",
+        "description": "",
         "parameters": [
           {
             "name": "albumid",
@@ -292,10 +241,7 @@
     },
     "/create_exchange": {
       "get": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint that allows to fetch the create exchange page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -303,10 +249,7 @@
         }
       },
       "post": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint to create a exchange",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -316,10 +259,7 @@
     },
     "/exchange": {
       "get": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint that allows to fetch the exchange page",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -329,10 +269,7 @@
     },
     "/get-credits": {
       "get": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint that allows to fetch the page to buy credits",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -342,10 +279,7 @@
     },
     "/print-credits/{username}": {
       "get": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint to get a the credits of user",
+        "description": "",
         "parameters": [
           {
             "name": "username",
@@ -363,10 +297,7 @@
     },
     "/accept_exchange": {
       "post": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint to accept a exchange",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -376,10 +307,7 @@
     },
     "/check_card_album": {
       "post": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to check if a card is in an album",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -389,10 +317,7 @@
     },
     "/check_exchanges": {
       "post": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint to get a list of exchanges",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -402,10 +327,7 @@
     },
     "/check_my_exchanges": {
       "post": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint to get a list of my exchanges",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -413,20 +335,20 @@
         }
       }
     },
-    "/character/{id}": {
+    "/characters": {
       "get": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to check get specific character from Marvel API",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        ],
+        }
+      },
+      "post": {
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -439,10 +361,7 @@
     },
     "/create_album": {
       "post": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to get a package of characters",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -452,74 +371,7 @@
     },
     "/edit-credits": {
       "post": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint to variate credits",
-        "parameters": [
-          {
-            "name": "headers",
-            "in": "headers",
-            "description": "Headers containing credit variation information",
-            "type": "object",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "type": "string",
-                  "example": "string"
-                },
-                "credits": {
-                  "type": "string",
-                  "example": "number"
-                },
-                "operation": {
-                  "type": "string",
-                  "example": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Credits successfully updated"
-          },
-          "400": {
-            "description": "Invalid parameters or insufficient credits"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/check-db": {
-      "post": {
-        "tags": [
-          "database"
-        ],
-        "description": "Endpoint to check the connection to the database",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/characters": {
-      "post": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to check get characters from Marvel API with a custom query",
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "type": "string"
-          }
-        ],
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -527,47 +379,55 @@
         }
       }
     },
+    "/check-db": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/get_user_data": {
       "post": {
-        "tags": [
-          "auth"
-        ],
-        "description": "Endpoint that allows to verify if user tuple of _id, email and nickname are valid in the database.",
+        "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "description": "tuple used for verification",
             "schema": {
-              "$ref": "#/definitions/authuser"
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "succesfully authorized.",
-            "schema": {
-              "$ref": "#/definitions/user"
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Invalid body parameter"
+            "description": "Unauthorized"
           },
           "500": {
-            "description": "Internal Error"
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/update-user": {
       "put": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint to edit a user.",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -577,10 +437,7 @@
     },
     "/delete-user/{userid}": {
       "delete": {
-        "tags": [
-          "users"
-        ],
-        "description": "Endpoint to delete a user",
+        "description": "",
         "parameters": [
           {
             "name": "userid",
@@ -598,10 +455,7 @@
     },
     "/delete-exchange/{exchangeid}": {
       "delete": {
-        "tags": [
-          "exchanges"
-        ],
-        "description": "Endpoint to delete an exchange",
+        "description": "",
         "parameters": [
           {
             "name": "exchangeid",
@@ -619,10 +473,7 @@
     },
     "/sell_card/": {
       "delete": {
-        "tags": [
-          "cards"
-        ],
-        "description": "Endpoint to sell a card",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"

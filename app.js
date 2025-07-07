@@ -2,16 +2,18 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Serve la cartella "public" per CSS, JS, immagini, ecc.
-app.use(express.static(path.join(__dirname, 'public')));
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-import { marvel } from "./config/prefs.js";
+// Serve la cartella "public" per CSS, JS, immagini, ecc.
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));
+
 import * as database from './lib/database.js';
-import * as marvel_API from './lib/marvel.js';
+import * as hp_API from './lib/hp.js'; // <-- il nuovo import!
 import * as Utils from './lib/utils.js';
 import * as register from './lib/register.js';
 import { login } from './lib/login.js';
@@ -21,10 +23,6 @@ import {
   setup as swaggerUiSetup,
 } from "swagger-ui-express";
 import swaggerDocument from './lib/api/docs/swagger-output.json' with { type: 'json' };
-
-// Fix per __filename e __dirname in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // Variabile globale
 global.db;
