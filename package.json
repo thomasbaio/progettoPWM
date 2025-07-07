@@ -23,7 +23,7 @@
   "devDependencies": {
     "swagger-autogen": "^2.23.5"
   },
-  "name": "afse",
+  "name": "hogwarz",
   "description": "Progetto programmazione WEB e mobile",
   "bugs": {
     "url": "https://github.com/studentedamiani/ProgettoMarvelPWM/issues"
@@ -35,9 +35,9 @@
   },
   "keywords": [
     "Figurine",
-    "SuperEroi",
+    "Pesonaggii",
     "Eroi",
-    "Marvel",
+    "Hogwarz",
     "Album",
     "Album",
     "figurine"

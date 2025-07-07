@@ -179,7 +179,11 @@ app.post("/register", async (req, res) => {
   }
 });
 app.post('/package', (req, res) => {
-  marvel_API.returnPackage(req.body).then(response => { res.send(response); });
+  hp_API.returnPackage(req.body).then(response => { res.send(response); });
+});
+app.post("/characters", (req, res) => {
+  hp_API.getFromHP(req, 'characters', req.query)
+  ...
 });
 app.post('/create_album', (req, res) => {
   database.createAlbum(req.body).then(response => { res.send(response); });
