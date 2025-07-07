@@ -180,7 +180,6 @@ app.post('/package', (req, res) => {
 });
 app.post("/characters", (req, res) => {
   hp_API.getFromHP(req, 'characters', req.query)
-  ...
 });
 app.post('/create_album', (req, res) => {
   database.createAlbum(req.body).then(response => { res.send(response); });
