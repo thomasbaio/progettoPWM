@@ -48,52 +48,55 @@ class SearchableSelect {
             
             // Creation of the query
             query="nameStartsWith="+query+"&orderBy=name&"
-            async function getHPCharacters(query) {
-            // Chiama la tua API backend che restituisce i personaggi Harry Potter
-     // Puoi adattare l'URL e i parametri secondo necessità
-           const response = await fetch(`/characters?name=${encodeURIComponent(query)}`);
-  if (!response.ok) {
-    throw new Error('Errore recupero personaggi');
-  }
-  const data = await response.json();
-  // data.data.results se il backend restituisce la struttura come nel tuo hp.js
-  return data.data.results;
+           // Funzione utility per cercare personaggi Harry Potter via backend
+async function getHPCharacters(query) {
+    const response = await fetch(`/characters?name=${encodeURIComponent(query)}`);
+    if (!response.ok) {
+        throw new Error('Errore recupero personaggi');
+    }
+    const data = await response.json();
+    return data.data.results; // Adatta se il formato è diverso
 }
-                    
-                    if (user_Id && album_ID) {
-                        const filteredData = [];
-                        for (const character of response.data) {
-                            try {
-                                const checkResponse = await fetch('/check_card_album', {
-                                    method: "POST",
-                                    headers: { "Content-Type": "application/json" },
-                                    body: JSON.stringify({
-                                        user_Id: user_Id,
-                                        album_Id: album_ID,
-                                        card_Id: character.id
-                                    })
-                                });
-                                const result = await checkResponse.json();
-                                if (result.length < 1) {
-                                    filteredData.push(character);
-                                }
-                            } catch (err) {
-                                console.error('Error checking card:', err);
-                            }
+
+class SearchableSelect {
+    // ... (resto del costruttore e metodi) ...
+
+    async performSearch(query) {
+        try {
+            this.showLoading();
+
+            // Recupera i risultati HP
+            const results = await getHPCharacters(query);
+
+            // Se vuoi filtrare per album/user
+            let filteredResults = results;
+            var user_Id = localStorage.getItem("_id");
+            var album_ID = localStorage.getItem("album_ID");
+            if (user_Id && album_ID) {
+                filteredResults = [];
+                // Verifica per ogni personaggio se è già nell'album
+                for (const character of results) {
+                    try {
+                        const checkResponse = await fetch('/check_card_album', {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                user_Id: user_Id,
+                                album_Id: album_ID,
+                                card_Id: character.id // oppure character.name se usi il nome
+                            })
+                        });
+                        const result = await checkResponse.json();
+                        if (result.length < 1) {
+                            filteredResults.push(character);
                         }
-                        response.data = filteredData;
+                    } catch (err) {
+                        console.error('Error checking card:', err);
                     }
                 }
-                    this.displayResults(response.data);
-                if (response.code!=200) {
-                throw new Error('Network response was not ok'+response.code);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                this.displayError('Error fetching results');
-            })
+            }
 
+            this.displayResults(filteredResults);
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -102,6 +105,9 @@ class SearchableSelect {
             this.hideLoading();
         }
     }
+
+    // ... (resto della classe)
+}
 
    displayResults(data) {
     this.searchResults.innerHTML = '';
