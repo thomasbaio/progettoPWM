@@ -106,8 +106,6 @@ class SearchableSelect {
         }
     }
 
-    // ... (resto della classe)
-}
 
    displayResults(data) {
     this.searchResults.innerHTML = '';
