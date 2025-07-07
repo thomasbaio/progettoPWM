@@ -85,8 +85,7 @@ app.get('/albums/:userid', async (req, res) => {
   }
 });
 
-// Importa la tua nuova hp.js come hp_API
-const hp_API = require('./hp.js'); // o import ... se usi ES Modules
+
 
 app.get('/albums_cards/:albumid', async (req, res) => {
   try {
